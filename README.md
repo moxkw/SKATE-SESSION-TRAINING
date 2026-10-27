@@ -1,6 +1,6 @@
 # SKATE SESSION — Ollie & Fakie Ollie
 
-Web app tập skateboard nhẹ nhàng 33 phút, viết bằng HTML/CSS/JS thuần, chạy offline, tối ưu Safari iPhone. Không framework, CDN, API hay backend.
+Web app tập skateboard nhẹ nhàng 20 phút, viết bằng HTML/CSS/JS thuần, chạy offline, tối ưu Safari iPhone. Không framework, CDN, API hay backend.
 
 ## Cấu trúc
 
@@ -14,9 +14,9 @@ skate-session/
 └── README.md
 ```
 
-## Lịch tập (33 phút)
+## Lịch tập (20 phút)
 
-Khởi động 10 phút, Ollie 8 phút, Fakie Ollie 8 phút, Hạ nhiệt 7 phút. Bạn có thể tạm dừng, bỏ qua giai đoạn hoặc kết thúc bất kỳ lúc nào.
+Khởi động 4 phút, Ollie 5 phút, Fakie Ollie 5 phút, Hạ nhiệt 6 phút (4 + 5 + 5 + 6 = 20). Bạn có thể tạm dừng, bỏ qua giai đoạn hoặc kết thúc bất kỳ lúc nào.
 
 ## Ba cách chạy
 
@@ -43,6 +43,14 @@ Chạy thử trên máy tính: mở terminal trong thư mục dự án, gõ `pyt
 - Đảm bảo đã mở app ít nhất một lần khi có mạng.
 - Khi đang tập, khóa màn hình rồi mở lại: timer tính theo giờ hệ thống nên vẫn đúng.
 - Nếu app không hoạt động offline, mở lại một lần khi có mạng rồi thử lại.
+
+## Giọng nói
+
+App đọc nhắc việc bằng giọng nói có sẵn của iPhone (Web Speech API), không cần Internet: lời nhắc đội mũ bảo hiểm khi bắt đầu, tên từng giai đoạn, "Còn một phút", số lần tiếp đất sạch, tạm dừng, tiếp tục và kết thúc. Bấm **Giọng nói: Bật/Tắt** trên màn hình chính để đổi; lựa chọn được ghi nhớ.
+
+- iOS chỉ đọc khi trang đang mở trên màn hình. Khóa màn hình hoặc chuyển app thì không có tiếng.
+- Nếu giọng đọc nghe không phải tiếng Việt, vào Cài đặt, Trợ năng, Nội dung được đọc, Giọng nói, Tiếng Việt, để tải giọng Việt về máy.
+- Công tắc Im lặng của iPhone có thể làm giảm hoặc tắt tiếng.
 
 ## Cập nhật app
 

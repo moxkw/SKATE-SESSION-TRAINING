@@ -3,10 +3,10 @@
 
   /* ---------- Cấu hình ---------- */
   var PHASES = [
-    { key: 'warmup', name: 'Khởi động', min: 10, trick: false, hint: 'Lăn ván nhẹ, xoay cổ chân, nhún gối nhẹ.', cue: 'Bắt đầu khởi động. Lăn ván nhẹ nhàng, xoay cổ chân và nhún gối.' },
-    { key: 'ollie', name: 'Ollie', min: 8, trick: true, hint: 'Mỗi set 2–3 lần, nghỉ giữa các set. Tiếp đất chắc quan trọng hơn độ cao.', cue: 'Đến phần Ollie. Mỗi set hai đến ba lần, ưu tiên tiếp đất chắc chắn.' },
-    { key: 'fakie', name: 'Fakie Ollie', min: 8, trick: true, hint: 'Giữ tốc độ quen thuộc, mỗi set 2–3 lần. Ưu tiên tiếp đất cân bằng.', cue: 'Đến phần Fakie Ollie. Giữ tốc độ quen thuộc, tiếp đất cân bằng.' },
-    { key: 'cooldown', name: 'Hạ nhiệt', min: 7, trick: false, hint: 'Đi bộ nhẹ hoặc lăn ván chậm, thả lỏng cơ thể.', cue: 'Hạ nhiệt. Đi bộ nhẹ hoặc lăn chậm, thả lỏng cơ thể.' }
+    { key: 'warmup', name: 'Khởi động', min: 4, trick: false, hint: 'Lăn ván nhẹ, xoay cổ chân, nhún gối nhẹ.', cue: 'Bắt đầu khởi động. Lăn ván nhẹ nhàng, xoay cổ chân và nhún gối.' },
+    { key: 'ollie', name: 'Ollie', min: 5, trick: true, hint: 'Mỗi set 2–3 lần, nghỉ giữa các set. Tiếp đất chắc quan trọng hơn độ cao.', cue: 'Đến phần Ollie. Mỗi set hai đến ba lần, ưu tiên tiếp đất chắc chắn.' },
+    { key: 'fakie', name: 'Fakie Ollie', min: 5, trick: true, hint: 'Giữ tốc độ quen thuộc, mỗi set 2–3 lần. Ưu tiên tiếp đất cân bằng.', cue: 'Đến phần Fakie Ollie. Giữ tốc độ quen thuộc, tiếp đất cân bằng.' },
+    { key: 'cooldown', name: 'Hạ nhiệt', min: 6, trick: false, hint: 'Đi bộ nhẹ hoặc lăn ván chậm, thả lỏng cơ thể.', cue: 'Hạ nhiệt. Đi bộ nhẹ hoặc lăn chậm, thả lỏng cơ thể.' }
   ];
   var STATUS = { idle: 'Chưa bắt đầu', running: 'Đang tập', paused: 'Đang nghỉ', done: 'Đã hoàn thành' };
   var KEY_ACTIVE = 'skateSession.active.v1';
@@ -219,6 +219,10 @@
     var ok = s && typeof s.idx === 'number' && PHASES[s.idx] && s.counts && s.counts.ollie && s.counts.fakie &&
       Array.isArray(s.spent) && s.spent.length === PHASES.length && s.undo && s.id &&
       (s.status === 'running' || s.status === 'paused');
+    if (ok) {
+      for (var i = 0; i < PHASES.length; i++) s.spent[i] = Math.max(0, Math.min(dur(i), Number(s.spent[i]) || 0));
+      s.remaining = Math.max(0, Math.min(dur(s.idx), Number(s.remaining) || 0));
+    }
     pending = ok ? s : null;
   }
 

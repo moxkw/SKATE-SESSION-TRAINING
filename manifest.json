@@ -1,7 +1,7 @@
 {
   "name": "Skate Session — Ollie & Fakie Ollie",
   "short_name": "Skate Session",
-  "description": "Buổi tập skateboard nhẹ nhàng 33 phút, offline.",
+  "description": "Buổi tập skateboard nhẹ nhàng 20 phút, offline.",
   "lang": "vi",
   "start_url": "./index.html",
   "scope": "./",

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Skate Session</title>
+<meta name="theme-color" content="#101216" id="themeMeta">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Skate Session">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23101216'/%3E%3Crect x='10' y='25' width='44' height='10' rx='5' fill='%23ff6a1f'/%3E%3Ccircle cx='21' cy='43' r='4' fill='%23f3efe8'/%3E%3Ccircle cx='43' cy='43' r='4' fill='%23f3efe8'/%3E%3C/svg%3E">
+<link rel="apple-touch-icon" id="touchIcon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23101216'/%3E%3Crect x='10' y='25' width='44' height='10' rx='5' fill='%23ff6a1f'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main class="app">
+  <header class="top">
+    <div>
+      <h1>SKATE SESSION</h1>
+      <p class="muted" id="dateText"></p>
+    </div>
+    <div class="top-actions">
+      <button type="button" class="chip" id="themeBtn" aria-label="Đổi giao diện sáng hoặc tối">Sáng/Tối</button>
+      <button type="button" class="chip" id="historyBtn">Nhật ký</button>
+    </div>
+  </header>
+
+  <p class="banner warn" id="storageWarn" hidden>Không lưu được dữ liệu trên thiết bị (có thể đang bật chế độ riêng tư). Nhật ký chỉ tồn tại đến khi bạn đóng trang.</p>
+
+  <section class="banner" id="resumeBanner" hidden>
+    <p>Có một buổi tập đang dở. Mở lại? Đồng hồ sẽ ở trạng thái tạm dừng cho đến khi bạn bấm Tiếp tục.</p>
+    <div class="row">
+      <button type="button" class="btn primary" id="resumeYes">Mở lại buổi tập</button>
+      <button type="button" class="btn ghost" id="resumeNo">Bỏ buổi cũ</button>
+    </div>
+  </section>
+
+  <section class="card hero" id="hero">
+    <div class="status-row">
+      <span class="badge" id="statusBadge" data-state="idle">Chưa bắt đầu</span>
+      <span class="muted" id="totalText">Tổng 33 phút</span>
+    </div>
+    <p class="phase-name" id="phaseName">Khởi động</p>
+    <p class="muted hint" id="phaseHint"></p>
+    <div class="timer" id="timer" aria-live="off">10:00</div>
+    <div class="deck" id="deck" role="progressbar" aria-label="Tiến độ buổi tập" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div>
+    <p class="muted center" id="progressText">Tiến độ 0%</p>
+
+    <div class="controls">
+      <button type="button" class="btn primary big" id="startBtn">Bắt đầu buổi tập</button>
+      <button type="button" class="btn primary big" id="pauseBtn" hidden>Tạm dừng</button>
+      <button type="button" class="btn primary big" id="resumeBtn" hidden>Tiếp tục</button>
+      <div class="row">
+        <button type="button" class="btn ghost" id="skipBtn" hidden>Bỏ qua giai đoạn</button>
+        <button type="button" class="btn danger" id="endBtn" hidden>Kết thúc buổi tập</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="card" id="trackPanel" hidden>
+    <h2 id="trackTitle">Theo dõi tiếp đất</h2>
+    <div class="stats">
+      <div><b id="trackTries">0</b><span>Số lần thử</span></div>
+      <div><b id="trackClean">0</b><span>Tiếp đất sạch</span></div>
+      <div><b id="trackRate">—</b><span>Tỷ lệ sạch</span></div>
+    </div>
+    <button type="button" class="btn primary big" id="cleanBtn">+1 lần tiếp đất sạch</button>
+    <div class="row">
+      <button type="button" class="btn ghost" id="missBtn">+1 lần thử chưa sạch</button>
+      <button type="button" class="btn ghost" id="undoBtn">Hoàn tác</button>
+    </div>
+    <button type="button" class="btn quiet" id="resetCountBtn">Đặt lại bộ đếm giai đoạn này</button>
+  </section>
+
+  <section class="card" id="finishCard" hidden>
+    <h2>Xong buổi tập</h2>
+    <p id="finishSummary"></p>
+    <p class="muted" id="finishSaved"></p>
+    <p>Hôm nay bạn thấy thế nào?</p>
+    <div class="row" id="feelRow">
+      <button type="button" class="btn ghost" data-feel="Nhẹ nhàng" aria-pressed="false">Nhẹ nhàng</button>
+      <button type="button" class="btn ghost" data-feel="Vừa sức" aria-pressed="false">Vừa sức</button>
+      <button type="button" class="btn ghost" data-feel="Hơi mệt" aria-pressed="false">Hơi mệt</button>
+    </div>
+    <button type="button" class="btn primary" id="newBtn">Chuẩn bị buổi mới</button>
+  </section>
+
+  <section class="tricks">
+    <article class="card trick" id="cardOllie">
+      <h2>Ollie</h2>
+      <p class="muted">8 phút. Mỗi set 2–3 lần, nghỉ giữa các set. Tiếp đất chắc, không cần ollie cao.</p>
+      <p class="count"><b id="ollieClean">0</b> sạch / <span id="ollieTries">0</span> thử <em id="ollieRate">—</em></p>
+    </article>
+    <article class="card trick" id="cardFakie">
+      <h2>Fakie Ollie</h2>
+      <p class="muted">8 phút. Giữ tốc độ quen thuộc, mỗi set 2–3 lần. Ưu tiên tiếp đất cân bằng.</p>
+      <p class="count"><b id="fakieClean">0</b> sạch / <span id="fakieTries">0</span> thử <em id="fakieRate">—</em></p>
+    </article>
+  </section>
+
+  <section class="card safety">
+    <h2>An toàn</h2>
+    <p class="muted">Đội mũ bảo hiểm và tập trên nền phẳng. Nếu mệt, đau hoặc mất kiểm soát khi tiếp đất, hãy nghỉ hoặc dừng. Bạn không cần tập đủ 33 phút và không cần đạt thành tích nào.</p>
+  </section>
+
+  <p class="muted center small" id="offlineText">Đang kiểm tra chế độ offline…</p>
+</main>
+
+<div class="sheet" id="historySheet" hidden>
+  <div class="sheet-body" role="dialog" aria-modal="true" aria-labelledby="historyTitle">
+    <h2 id="historyTitle">Nhật ký tập luyện</h2>
+    <p class="muted" id="historyEmpty">Chưa có buổi tập nào. Hoàn thành một buổi để thấy nhật ký ở đây.</p>
+    <ul class="hlist" id="historyList"></ul>
+    <div class="row">
+      <button type="button" class="btn ghost" id="exportBtn">Xuất JSON</button>
+      <button type="button" class="btn danger" id="clearHistoryBtn">Xóa lịch sử</button>
+    </div>
+    <button type="button" class="btn quiet" id="resetAppBtn">Xóa dữ liệu và đặt lại ứng dụng</button>
+    <button type="button" class="btn primary" id="closeHistory">Đóng</button>
+  </div>
+</div>
+
+<div class="sheet" id="exportSheet" hidden>
+  <div class="sheet-body" role="dialog" aria-modal="true" aria-labelledby="exportTitle">
+    <h2 id="exportTitle">Xuất nhật ký JSON</h2>
+    <textarea id="exportText" readonly rows="8"></textarea>
+    <div class="row">
+      <button type="button" class="btn ghost" id="downloadBtn">Tải file .json</button>
+      <button type="button" class="btn ghost" id="copyBtn">Sao chép</button>
+    </div>
+    <button type="button" class="btn primary" id="closeExport">Đóng</button>
+  </div>
+</div>
+
+<div class="sheet" id="confirmSheet" hidden>
+  <div class="sheet-body" role="alertdialog" aria-modal="true" aria-labelledby="confirmTitle" aria-describedby="confirmMsg">
+    <h2 id="confirmTitle"></h2>
+    <p id="confirmMsg"></p>
+    <div class="row">
+      <button type="button" class="btn ghost" id="confirmCancel">Hủy</button>
+      <button type="button" class="btn danger" id="confirmOk">Đồng ý</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+<script src="app.js"></script>
+</body>
+</html>

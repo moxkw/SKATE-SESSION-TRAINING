@@ -1,0 +1,20 @@
+{
+  "name": "Skate Session — Ollie & Fakie Ollie",
+  "short_name": "Skate Session",
+  "description": "Buổi tập skateboard nhẹ nhàng 33 phút, offline.",
+  "lang": "vi",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#101216",
+  "theme_color": "#101216",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23101216'/%3E%3Crect x='10' y='25' width='44' height='10' rx='5' fill='%23ff6a1f'/%3E%3Ccircle cx='21' cy='43' r='4' fill='%23f3efe8'/%3E%3Ccircle cx='43' cy='43' r='4' fill='%23f3efe8'/%3E%3C/svg%3E",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
